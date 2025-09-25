@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HXOBrand - Загрузка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 30%, #2a1a1a 70%, #0a0a0a 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes progressFill {
+            from {
+                width: 0%;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(139, 0, 0, 0.8), 0 0 30px rgba(139, 0, 0, 0.6);
+            }
+        }
+        
+        /* Фоновые эффекты */
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+        
+        .orb-3 {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+        
+        /* Основной контент */
+        .loading-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffffff, #8b0000, #ffffff, #8b0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out forwards, textGlow 2s ease-in-out infinite 3s;
+            letter-spacing: -3px;
+            margin-bottom: 40px;
+            line-height: 1;
+        }
+        
+        .tagline {
+            font-size: 24px;
+            font-weight: 300;
+            color: #cccccc;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease forwards 1s;
+            opacity: 0;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+        
+        /* Прогресс бар */
+        .progress-container {
+            width: 400px;
+            max-width: 90%;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease forwards 1.5s;
+            opacity: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b0000, #ff4444, #8b0000);
+            background-size: 200% 100%;
+            border-radius: 2px;
+            width: 0%;
+            animation: progressFill 3s ease-in-out forwards 2s;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+        
+        /* Процент загрузки */
+        .loading-percentage {
+            font-size: 18px;
+            font-weight: 600;
+            color: #8b0000;
+            margin-top: 20px;
+            animation: fadeInUp 1s ease forwards 2s;
+            opacity: 0;
+        }
+        
+        /* Спиннер */
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(139, 0, 0, 0.2);
+            border-top: 3px solid #8b0000;
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease forwards 0.5s, rotate 1s linear infinite 1s;
+            opacity: 0;
+        }
+        
+        /* Статус загрузки */
+        .loading-status {
+            font-size: 16px;
+            color: #999;
+            margin-top: 20px;
+            animation: fadeInUp 1s ease forwards 2.5s;
+            opacity: 0;
+        }
+        
+        /* Декоративные элементы */
+        .decorative-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.3), transparent);
+            animation: fadeInUp 1s ease forwards 3s;
+            opacity: 0;
+        }
+        
+        .line-1 {
+            width: 200px;
+            top: 30%;
+            left: 10%;
+            animation-delay: 3s;
+        }
+        
+        .line-2 {
+            width: 150px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 3.2s;
+        }
+        
+        .line-3 {
+            width: 100px;
+            bottom: 25%;
+            left: 25%;
+            animation-delay: 3.4s;
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 48px;
+                letter-spacing: -2px;
+            }
+            
+            .tagline {
+                font-size: 18px;
+                margin-bottom: 40px;
+            }
+            
+            .progress-container {
+                width: 300px;
+            }
+            
+            .spinner {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 36px;
+            }
+            
+            .tagline {
+                font-size: 16px;
+            }
+            
+            .progress-container {
+                width: 250px;
+            }
+        }
+        
+        /* Анимация завершения загрузки */
+        .loading-complete {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .loading-complete .logo {
+            animation: shimmer 3s ease-in-out forwards, textGlow 2s ease-in-out infinite 3s, pulse 0.5s ease forwards 4s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые эффекты -->
+    <div class="background-effects">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="decorative-line line-1"></div>
+        <div class="decorative-line line-2"></div>
+        <div class="decorative-line line-3"></div>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="loading-container">
+        <div class="spinner"></div>
+        
+        <h1 class="logo">HXOBrand</h1>
+        
+        <p class="tagline">
+            Погрузитесь в мир роскошной моды, где каждая деталь создана с безупречным вкусом и изысканностью
+        </p>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="loading-percentage" id="percentage">0%</div>
+        </div>
+        
+        <div class="loading-status" id="status">Инициализация системы...</div>
+    </div>
+    
+    <script>
+        // Статусы загрузки
+        const loadingStatuses = [
+            { text: "Инициализация системы...", delay: 0 },
+            { text: "Загрузка коллекций...", delay: 500 },
+            { text: "Подготовка каталога...", delay: 1000 },
+            { text: "Оптимизация изображений...", delay: 1500 },
+            { text: "Настройка интерфейса...", delay: 2000 },
+            { text: "Финальная проверка...", delay: 2500 },
+            { text: "Готово!", delay: 3000 }
+        ];
+        
+        // Обновление процента загрузки
+        function updatePercentage(percent) {
+            const percentageElement = document.getElementById('percentage');
+            percentageElement.textContent = percent + '%';
+        }
+        
+        // Обновление статуса
+        function updateStatus(text) {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = text;
+        }
+        
+        // Анимация загрузки
+        function startLoading() {
+            let currentStatus = 0;
+            let currentPercent = 0;
+            
+            // Обновление статусов
+            const statusInterval = setInterval(() => {
+                if (currentStatus < loadingStatuses.length) {
+                    updateStatus(loadingStatuses[currentStatus].text);
+                    currentStatus++;
+                } else {
+                    clearInterval(statusInterval);
+                }
+            }, 500);
+            
+            // Обновление процента
+            const percentInterval = setInterval(() => {
+                if (currentPercent < 100) {
+                    currentPercent += Math.random() * 15 + 5; // Случайный прирост 5-20%
+                    if (currentPercent > 100) currentPercent = 100;
+                    updatePercentage(Math.floor(currentPercent));
+                } else {
+                    clearInterval(percentInterval);
+                }
+            }, 100);
+            
+            // Переход на главную страницу
+            setTimeout(() => {
+                // Добавляем класс завершения
+                document.body.classList.add('loading-complete');
+                
+                // Небольшая задержка для завершения анимации
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+            }, 4000);
+        }
+        
+        // Запуск загрузки
+        document.addEventListener('DOMContentLoaded', () => {
+            startLoading();
+        });
+        
+        // Предотвращение случайного закрытия
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+    </script>
+</body>
+</html>

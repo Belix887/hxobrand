@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HXOBrand - Модный магазин</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Анимация появления элементов */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ffffff, #8b0000, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            animation: shimmer 3s ease-in-out forwards;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        
+        .nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8b0000, #ff4444);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav a:hover {
+            color: #8b0000;
+            background: rgba(139, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav a:hover::before {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn:hover {
+            color: #8b0000;
+            transform: scale(1.1);
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+            padding: 20px;
+            flex-direction: column;
+            gap: 20px;
+            animation: slideInLeft 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .mobile-menu a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .mobile-menu a:hover {
+            background: rgba(139, 0, 0, 0.2);
+            border-left-color: #8b0000;
+            transform: translateX(10px);
+        }
+        
+        .main {
+            padding-top: 80px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 30%, #2a1a1a 70%, #0a0a0a 100%);
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(139, 0, 0, 0.05) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffffff, #8b0000, #ffffff, #8b0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out forwards;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+        
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 50px;
+            color: #cccccc;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #8b0000, #ff4444, #8b0000);
+            background-size: 200% 200%;
+            color: #ffffff;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.3);
+            border: 2px solid transparent;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(139, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .section h2 {
+            font-size: 48px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 80px;
+            background: linear-gradient(45deg, #ffffff, #8b0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(139, 0, 0, 0.2);
+            border-color: rgba(139, 0, 0, 0.4);
+        }
+        
+        .product-card:hover::before {
+            opacity: 1;
+        }
+        
+        .product-image {
+            height: 280px;
+            background: linear-gradient(135deg, #1a1a1a, #2a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b0000;
+            font-size: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            filter: brightness(0.9) contrast(1.1);
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+            filter: brightness(1) contrast(1.2);
+        }
+        
+        .product-card:hover .product-image::before {
+            opacity: 1;
+        }
+        
+        .product-content {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #8b0000;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            font-size: 20px;
+            color: #8b0000;
+            font-weight: 500;
+        }
+        
+        .admin-section {
+            background: linear-gradient(145deg, rgba(139, 0, 0, 0.1), rgba(139, 0, 0, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            padding: 60px;
+            border-radius: 20px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.05), transparent);
+            pointer-events: none;
+        }
+        
+        .admin-section h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-section p {
+            color: #cccccc;
+            font-size: 18px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-links a {
+            background: linear-gradient(45deg, #8b0000, #ff4444);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+            border: 2px solid transparent;
+        }
+        
+        .admin-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 15px;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section h2 {
+                font-size: 36px;
+                margin-bottom: 50px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .product-card {
+                margin: 0 10px;
+            }
+            
+            .admin-links {
+                flex-direction: column;
+            }
+            
+            .admin-links a {
+                text-align: center;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .admin-section {
+                padding: 40px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 16px 32px;
+                font-size: 16px;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .product-content {
+                padding: 25px;
+            }
+            
+            .product-name {
+                font-size: 20px;
+            }
+            
+            .product-price {
+                font-size: 24px;
+            }
+            
+            .mobile-menu a {
+                padding: 15px 0;
+                font-size: 18px;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .section h2 {
+                font-size: 28px;
+            }
+        }
+        
+        /* Улучшения для сенсорных устройств */
+        @media (hover: none) and (pointer: coarse) {
+            .product-card:hover {
+                transform: none;
+            }
+            
+            .product-card:active {
+                transform: scale(0.98);
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+        }
+        
+        /* Улучшения для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .section h2 {
+                font-size: 24px;
+            }
+            
+            .product-image {
+                height: 220px;
+            }
+            
+            .hero p {
+                font-size: 14px;
+            }
+        }
+        
+        /* Стили для формы подписки */
+        .newsletter-section {
+            margin-top: 80px;
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+        }
+
+        .newsletter-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .newsletter-content h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffffff, #8b0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .newsletter-content p {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            margin-bottom: 20px;
+        }
+
+        .newsletter-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form .form-group .input-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 18px 25px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: #8b0000;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+        }
+
+        .newsletter-form input::placeholder {
+            color: #999;
+        }
+
+        .newsletter-form .btn {
+            padding: 18px 35px;
+            white-space: nowrap;
+        }
+
+        .newsletter-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .newsletter-message.success {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #28a745;
+        }
+
+        .newsletter-message.error {
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+        }
+
+        /* Стильные уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px 25px;
+            color: #ffffff;
+            font-weight: 500;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification.success {
+            border-color: rgba(40, 167, 69, 0.5);
+            background: linear-gradient(145deg, rgba(40, 167, 69, 0.2), rgba(40, 167, 69, 0.1));
+        }
+
+        .notification.error {
+            border-color: rgba(220, 53, 69, 0.5);
+            background: linear-gradient(145deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.1));
+        }
+
+        .notification.warning {
+            border-color: rgba(255, 193, 7, 0.5);
+            background: linear-gradient(145deg, rgba(255, 193, 7, 0.2), rgba(255, 193, 7, 0.1));
+            color: #ffc107;
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .notification-message {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification.hide {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            .notification {
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .newsletter-content h3 {
+                font-size: 24px;
+            }
+
+            .newsletter-content p {
+                font-size: 16px;
+            }
+
+            .newsletter-form .form-group .input-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .newsletter-form .btn {
+                width: 100%;
+            }
+        }
+
+        /* Стили для карточек коллекций */
+        .collection-card {
+            position: relative;
+        }
+
+        .future-collection .product-image {
+            position: relative;
+        }
+
+        .future-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(2px);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .future-collection:hover .future-overlay {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .want-btn {
+            background: linear-gradient(45deg, #8b0000, #ff4444);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .want-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+            background: linear-gradient(45deg, #ff4444, #8b0000);
+        }
+
+        .want-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Модальное окно для листа ожидания */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 20px;
+            margin: 5% auto;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #8b0000;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal-header p {
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b0000;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #ff4444;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-form input,
+        .modal-form textarea {
+            padding: 15px 20px;
+            border: 2px solid rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-form input:focus,
+        .modal-form textarea:focus {
+            outline: none;
+            border-color: #8b0000;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+        }
+
+        .modal-form input::placeholder,
+        .modal-form textarea::placeholder {
+            color: #999;
+        }
+
+        .modal-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-form button {
+            background: linear-gradient(45deg, #8b0000, #ff4444);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.3);
+        }
+
+        .modal-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(139, 0, 0, 0.4);
+        }
+
+        .modal-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 10% auto;
+                padding: 30px 20px;
+                width: 95%;
+            }
+
+            .modal-header h2 {
+                font-size: 20px;
+            }
+
+            .modal-header p {
+                font-size: 14px;
+            }
+        }
+
+        /* Дополнительные анимации для элементов */
+        .product-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .section h2 {
+            animation: slideInLeft 0.8s ease forwards;
+        }
+        
+        .btn {
+            animation: slideInRight 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">HXOBrand</a>
+            <nav class="nav">
+                <a href="#home">Главная</a>
+                <a href="#products">Каталог</a>
+                <a href="#collections">Коллекции</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#home" onclick="closeMobileMenu()">Главная</a>
+                <a href="#products" onclick="closeMobileMenu()">Каталог</a>
+                <a href="#collections" onclick="closeMobileMenu()">Коллекции</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Добро пожаловать в HXOBrand</h1>
+                <p>Погрузитесь в мир роскошной моды, где каждая деталь создана с безупречным вкусом и изысканностью</p>
+                <a href="#products" class="btn">Исследовать коллекцию</a>
+            </div>
+        </section>
+
+        <section id="products" class="section">
+            <div class="container">
+                <h2>Эксклюзивные изделия</h2>
+                <div id="products-container" class="products-grid">
+                    <div class="loading">Загрузка коллекции...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="collections" class="section">
+            <div class="container">
+                <h2>Предстоящие коллекции</h2>
+                <div id="collections-container" class="products-grid">
+                    <div class="loading">Загрузка превью...</div>
+                </div>
+                
+                <!-- Форма подписки на уведомления о коллекциях -->
+                <div class="newsletter-section">
+                    <div class="newsletter-content">
+                        <h3>Узнайте первыми о новых коллекциях</h3>
+                        <p>Подпишитесь на уведомления в Telegram и будьте в курсе всех новинок</p>
+                        <form class="newsletter-form" id="newsletterForm">
+                            <div class="form-group">
+                                <div class="input-row">
+                                    <input type="text" id="subscriberName" placeholder="Введите ваше имя" required>
+                                    <input type="text" id="subscriberTelegram" placeholder="@username или ссылка на Telegram" required>
+                                </div>
+                                <button type="submit" class="btn">Подписаться</button>
+                            </div>
+                        </form>
+                        <div class="newsletter-message" id="newsletterMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Модальное окно для листа ожидания -->
+    <div id="waitlistModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWaitlistForm()">&times;</span>
+            <div class="modal-header">
+                <h2>Записаться в лист ожидания</h2>
+                <p id="modalCollectionName">Коллекция</p>
+            </div>
+            <form class="modal-form" id="waitlistForm">
+                <input type="text" id="waitlistName" placeholder="Ваше имя" required>
+                <input type="text" id="waitlistTelegram" placeholder="@username или ссылка на Telegram" required>
+                <input type="email" id="waitlistEmail" placeholder="Email (опционально)">
+                <textarea id="waitlistMessage" placeholder="Дополнительные пожелания или комментарии"></textarea>
+                <button type="submit">Записаться в лист ожидания</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Проверка, нужно ли показывать загрузку
+        if (!sessionStorage.getItem('loadingShown')) {
+            sessionStorage.setItem('loadingShown', 'true');
+            window.location.href = 'loading.html';
+        }
+        
+        // Загрузка товаров
+        async function loadProducts() {
+            try {
+                const response = await fetch('http://localhost:5000/api/products');
+                const products = await response.json();
+                
+                const container = document.getElementById('products-container');
+                container.innerHTML = '';
+                
+                products.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <div class="product-image">
+                            ${product.images && product.images[0] ? 
+                                `<img src="http://localhost:5000${product.images[0]}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                'Изображение'
+                            }
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-price">${product.price.toLocaleString('ru-RU')} ₽</p>
+                            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">${product.description}</p>
+                            <p style="font-size: 12px; color: #999;">
+                                Размеры: ${product.sizes.join(', ')}<br>
+                                Цвета: ${product.colors.join(', ')}
+                            </p>
+                        </div>
+                    `;
+                    container.appendChild(productCard);
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки товаров:', error);
+                document.getElementById('products-container').innerHTML = 
+                    '<div class="loading">Ошибка загрузки товаров. Проверьте, что сервер запущен на порту 5000.</div>';
+            }
+        }
+
+        // Загрузка коллекций
+        async function loadCollections() {
+            try {
+                const response = await fetch('http://localhost:5000/api/collections');
+                const collections = await response.json();
+                
+                const container = document.getElementById('collections-container');
+                container.innerHTML = '';
+                
+                collections.forEach(collection => {
+                    const releaseDate = new Date(collection.releaseDate);
+                    const isFuture = releaseDate > new Date();
+                    const isActive = collection.isActive;
+                    
+                    const collectionCard = document.createElement('div');
+                    collectionCard.className = `product-card collection-card ${isFuture ? 'future-collection' : ''}`;
+                    collectionCard.innerHTML = `
+                        <div class="product-image">
+                            ${collection.teaserImage ? 
+                                `<img src="http://localhost:5000${collection.teaserImage}" alt="${collection.title}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                'Тизер коллекции'
+                            }
+                            ${isFuture ? '<div class="future-overlay"></div>' : ''}
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-name">${collection.title}</h3>
+                            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">${collection.description}</p>
+                            <p style="font-size: 12px; color: #999; margin-bottom: 15px;">
+                                Дата выхода: ${releaseDate.toLocaleDateString('ru-RU')}<br>
+                                Статус: ${isActive ? 'Активна' : 'Неактивна'}
+                            </p>
+                            ${isFuture ? `
+                                <button class="want-btn" onclick="openWaitlistForm('${collection.title}', '${collection.id}')">
+                                    Хочу
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                    container.appendChild(collectionCard);
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки коллекций:', error);
+                document.getElementById('collections-container').innerHTML = 
+                    '<div class="loading">Ошибка загрузки коллекций. Проверьте, что сервер запущен на порту 5000.</div>';
+            }
+        }
+
+        // Функции мобильного меню
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.remove('active');
+        }
+
+        // Функции админки
+        function showAddProduct() {
+            showNotification('Информация', 'Для добавления товаров используйте API: POST http://localhost:5000/api/products или создайте полноценную админ-панель на React.', 'info', 8000);
+        }
+
+        function showAddCollection() {
+            showNotification('Информация', 'Для создания коллекций используйте API: POST http://localhost:5000/api/collections или создайте полноценную админ-панель на React.', 'info', 8000);
+        }
+
+        // Обработка формы подписки на коллекции
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('subscriberName').value.trim();
+            const telegram = document.getElementById('subscriberTelegram').value.trim();
+            
+            // Проверка полей
+            if (!name) {
+                showNewsletterMessage('Пожалуйста, введите ваше имя', 'error');
+                return;
+            }
+            
+            if (!telegram) {
+                showNewsletterMessage('Пожалуйста, введите ссылку на Telegram', 'error');
+                return;
+            }
+            
+            // Проверка формата Telegram
+            if (!telegram.includes('@') && !telegram.includes('t.me') && !telegram.includes('telegram.me')) {
+                showNewsletterMessage('Пожалуйста, введите корректную ссылку на Telegram (@username или ссылка)', 'error');
+                return;
+            }
+            
+            // Получаем существующих подписчиков
+            let subscribers = JSON.parse(localStorage.getItem('collectionSubscribers') || '[]');
+            
+            // Проверяем, не подписан ли уже этот Telegram
+            if (subscribers.some(sub => sub.telegram === telegram)) {
+                showNewsletterMessage('Этот Telegram уже подписан на уведомления', 'error');
+                return;
+            }
+            
+            // Добавляем нового подписчика
+            subscribers.push({
+                name: name,
+                telegram: telegram,
+                subscribedAt: new Date().toISOString()
+            });
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('collectionSubscribers', JSON.stringify(subscribers));
+            
+            // Показываем успешное сообщение
+            showNewsletterMessage(`Спасибо, ${name}! Вы успешно подписались на уведомления о новых коллекциях`, 'success');
+            
+            // Очищаем форму
+            document.getElementById('subscriberName').value = '';
+            document.getElementById('subscriberTelegram').value = '';
+        });
+        
+        function showNewsletterMessage(text, type) {
+            const messageDiv = document.getElementById('newsletterMessage');
+            messageDiv.textContent = text;
+            messageDiv.className = `newsletter-message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Скрываем сообщение через 5 секунд
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Функция для создания стильных уведомлений
+        function showNotification(title, message, type = 'success', duration = 5000) {
+            // Удаляем существующие уведомления
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            notification.innerHTML = `
+                <div class="notification-icon">${icons[type] || icons.info}</div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">×</button>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Автоматическое закрытие
+            if (duration > 0) {
+                setTimeout(() => {
+                    closeNotification(notification.querySelector('.notification-close'));
+                }, duration);
+            }
+        }
+
+        function closeNotification(closeBtn) {
+            const notification = closeBtn.closest('.notification');
+            notification.classList.add('hide');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }
+
+        // Функции для листа ожидания
+        function openWaitlistForm(collectionName, collectionId) {
+            document.getElementById('modalCollectionName').textContent = collectionName;
+            document.getElementById('waitlistModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWaitlistForm() {
+            document.getElementById('waitlistModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('waitlistForm').reset();
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('waitlistModal');
+            if (event.target === modal) {
+                closeWaitlistForm();
+            }
+        }
+
+        // Обработка формы листа ожидания
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('waitlistName').value.trim();
+            const telegram = document.getElementById('waitlistTelegram').value.trim();
+            const email = document.getElementById('waitlistEmail').value.trim();
+            const message = document.getElementById('waitlistMessage').value.trim();
+            const collectionName = document.getElementById('modalCollectionName').textContent;
+            
+            // Проверка обязательных полей
+            if (!name) {
+                showNotification('Ошибка', 'Пожалуйста, введите ваше имя', 'error');
+                return;
+            }
+            
+            if (!telegram) {
+                showNotification('Ошибка', 'Пожалуйста, введите ссылку на Telegram', 'error');
+                return;
+            }
+            
+            // Проверка формата Telegram
+            if (!telegram.includes('@') && !telegram.includes('t.me') && !telegram.includes('telegram.me')) {
+                showNotification('Ошибка', 'Пожалуйста, введите корректную ссылку на Telegram (@username или ссылка)', 'error');
+                return;
+            }
+            
+            // Получаем существующих подписчиков листа ожидания
+            let waitlist = JSON.parse(localStorage.getItem('collectionWaitlist') || '[]');
+            
+            // Проверяем, не записан ли уже этот Telegram
+            if (waitlist.some(item => item.telegram === telegram && item.collection === collectionName)) {
+                showNotification('Предупреждение', 'Вы уже записаны в лист ожидания для этой коллекции', 'warning');
+                return;
+            }
+            
+            // Добавляем нового подписчика в лист ожидания
+            waitlist.push({
+                name: name,
+                telegram: telegram,
+                email: email,
+                message: message,
+                collection: collectionName,
+                subscribedAt: new Date().toISOString()
+            });
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('collectionWaitlist', JSON.stringify(waitlist));
+            
+            // Показываем успешное сообщение
+            showNotification('Успешно!', `Спасибо, ${name}! Вы записаны в лист ожидания для коллекции "${collectionName}". Мы уведомим вас о выходе!`, 'success');
+            
+            // Закрываем модальное окно
+            closeWaitlistForm();
+        });
+
+        // Скрытый доступ к админке (Ctrl + Shift + A)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                window.location.href = 'admin-login.html';
+            }
+        });
+
+        // Загрузка данных при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            loadCollections();
+        });
+
+        // Плавная прокрутка для навигации
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Закрытие мобильного меню при клике вне его
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(e.target) && 
+                !mobileMenuBtn.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Обработка изменения ориентации экрана
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                closeMobileMenu();
+            }, 100);
+        });
+
+        // Предотвращение масштабирования при двойном тапе
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
